@@ -16,7 +16,7 @@ To change it, go to the application.properties in the src/main/resources in
 this project and type/change to server.port=numberOfThePort . 
 To access the Swagger page just type in the browser: localhost:8080/swagger-ui/ when running the project.
 
-## Which tools are been used
+## Which tools are being used
 
 Currently using Java version 17, Spring Boot, Spring Web, Spring Data JPA
 (Spring implementation), H2 database, Maven management build tool,
