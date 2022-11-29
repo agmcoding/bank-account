@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import spring.boot.bankaccount.dto.AccountCreateDTO;
 import spring.boot.bankaccount.dto.AccountDTO;
 import spring.boot.bankaccount.exception.CannotRequestNullValueException;
 import spring.boot.bankaccount.service.AccountService;
@@ -86,9 +87,9 @@ public class Controller {
 	}
 	
 	@PostMapping("/account")
-	public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO  dto) {
-		checkIfNull(dto);
-		AccountDTO newAccountDTO = accountService.create(dto);
+	public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountCreateDTO  createDTO) {
+		checkIfNull(createDTO);
+		AccountDTO newAccountDTO = accountService.create(createDTO);
 		return ResponseEntity.status(HttpStatus.CREATED).body(newAccountDTO);
 	}
 	

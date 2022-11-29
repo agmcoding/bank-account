@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import spring.boot.bankaccount.dto.AccountCreateDTO;
 import spring.boot.bankaccount.dto.AccountDTO;
-import spring.boot.bankaccount.exception.AccountAlreadyExistsException;
 import spring.boot.bankaccount.exception.AccountDoesntExistsException;
 import spring.boot.bankaccount.exception.BalanceLowerThanWithdrawalException;
 import spring.boot.bankaccount.model.Account;
@@ -38,9 +38,9 @@ public class AccountService {
 	}
 
 	/* from account to accountDTO */
-	private AccountDTO setAccountDTO(Account account) {
-		accountDTO.setId(account.getId());
-		accountDTO.setBalance(account.getBalance());
+	private AccountDTO setAccountDTO(Account settingAccountToDTO) {
+		accountDTO.setId(settingAccountToDTO.getId());
+		accountDTO.setBalance(settingAccountToDTO.getBalance());
 		return accountDTO;
 	}
 	
@@ -74,15 +74,14 @@ public class AccountService {
 		ifDoesntExistsThrowException(accountId);
 		Account withdrawalAccount = accountRepository.findById(accountId).get();
 		
-		if (account.getBalance() < value ) {
+		if (withdrawalAccount.getBalance() < value ) {
 			throw new BalanceLowerThanWithdrawalException("The account with id " + accountId + " has balance lower than withdrawal: " + value);
 		}
 		Double valueAfterWithdraw = withdrawalAccount.getBalance() - value;
 		withdrawalAccount.setBalance(valueAfterWithdraw);
 		accountRepository.save(withdrawalAccount);
 
-		AccountDTO withdrawalAccountDTO = setAccountDTO(account);
-		return withdrawalAccountDTO;
+		return setAccountDTO(withdrawalAccount);
 	}
 
 	public AccountDTO deposit(Integer accountId, Double value) {
@@ -93,8 +92,7 @@ public class AccountService {
 		depositAccount.setBalance(valueAfterDeposit);
 		accountRepository.save(depositAccount);
 
-		AccountDTO depositAccountDTO = setAccountDTO(account);
-		return depositAccountDTO;
+		return setAccountDTO(depositAccount);
 	}
 
 	@Transactional
@@ -113,12 +111,10 @@ public class AccountService {
 		return itExists;
 	}
 
-	public AccountDTO create(AccountDTO dto) {
-		boolean itExists = accountRepository.existsById(dto.getId());
-		if (itExists) {
-			throw new AccountAlreadyExistsException("The account with the id " + dto.getId() + " already exists.");
-		}
-		Account newAccount = setAccount(dto);
+	public AccountDTO create(AccountCreateDTO createDTO) {
+		accountDTO.setId(0);
+		accountDTO.setBalance(createDTO.getBalance());
+		Account newAccount = setAccount(accountDTO);
 		Account savedNewAccount = accountRepository.save(newAccount);
 		AccountDTO newDTO = setAccountDTO(savedNewAccount);
 		return newDTO;
