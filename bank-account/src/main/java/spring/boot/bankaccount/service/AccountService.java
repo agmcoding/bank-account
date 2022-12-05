@@ -13,6 +13,7 @@ import spring.boot.bankaccount.dto.AccountDTO;
 import spring.boot.bankaccount.exception.AccountDoesntExistsException;
 import spring.boot.bankaccount.exception.BalanceLowerThanWithdrawalException;
 import spring.boot.bankaccount.model.Account;
+import spring.boot.bankaccount.repository.AccountHolderRepository;
 import spring.boot.bankaccount.repository.AccountRepository;
 
 @Service
@@ -21,6 +22,7 @@ public class AccountService {
 	AccountRepository accountRepository;
 	AccountDTO accountDTO;
 	Account account;
+	AccountHolderRepository accountHolderRepository;
 
 	@Autowired
 	public void setAccountRepository(AccountRepository accountRepository) {
@@ -36,11 +38,17 @@ public class AccountService {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
+	
+	@Autowired
+	public void setAccountHolderRepository(AccountHolderRepository accountHolderRepository) {
+		this.accountHolderRepository = accountHolderRepository;
+	}
 
 	/* from account to accountDTO */
 	private AccountDTO setAccountDTO(Account settingAccountToDTO) {
 		accountDTO.setId(settingAccountToDTO.getId());
 		accountDTO.setBalance(settingAccountToDTO.getBalance());
+		accountDTO.setAccountHolder(settingAccountToDTO.getAccountHolder());
 		return accountDTO;
 	}
 	
@@ -48,12 +56,13 @@ public class AccountService {
 	private Account setAccount(AccountDTO dto) {
 		account.setId(dto.getId());
 		account.setBalance(dto.getBalance());
+		account.setAccountHolder(dto.getAccountHolder());
 		return account;
 	}
 
 	/* from account List to an accountDTO List */
 	private List<AccountDTO> setAccountDTOList(List<Account> accountList) {
-		return accountList.stream().map(account -> new AccountDTO(account.getId(), account.getBalance()))
+		return accountList.stream().map(account -> new AccountDTO(account.getId(), account.getBalance(), account.getAccountHolder()))
 				.collect(Collectors.toList());
 	}
 
@@ -114,6 +123,7 @@ public class AccountService {
 	public AccountDTO create(AccountCreateDTO createDTO) {
 		accountDTO.setId(0);
 		accountDTO.setBalance(createDTO.getBalance());
+		accountDTO.setAccountHolder(accountHolderRepository.findById(createDTO.getAccountHolderId()).get());
 		Account newAccount = setAccount(accountDTO);
 		Account savedNewAccount = accountRepository.save(newAccount);
 		AccountDTO newDTO = setAccountDTO(savedNewAccount);
