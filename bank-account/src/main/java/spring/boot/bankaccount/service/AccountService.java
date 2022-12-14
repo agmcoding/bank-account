@@ -12,6 +12,7 @@ import spring.boot.bankaccount.dto.AccountCreateDTO;
 import spring.boot.bankaccount.dto.AccountDTO;
 import spring.boot.bankaccount.exception.AccountDoesntExistsException;
 import spring.boot.bankaccount.exception.BalanceLowerThanWithdrawalException;
+import spring.boot.bankaccount.exception.CannotRequestNullValueException;
 import spring.boot.bankaccount.model.Account;
 import spring.boot.bankaccount.repository.AccountHolderRepository;
 import spring.boot.bankaccount.repository.AccountRepository;
@@ -33,12 +34,12 @@ public class AccountService {
 	public void setAccountDTO(AccountDTO accountDTO) {
 		this.accountDTO = accountDTO;
 	}
-	
+
 	@Autowired
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-	
+
 	@Autowired
 	public void setAccountHolderRepository(AccountHolderRepository accountHolderRepository) {
 		this.accountHolderRepository = accountHolderRepository;
@@ -51,7 +52,7 @@ public class AccountService {
 		accountDTO.setAccountHolder(settingAccountToDTO.getAccountHolder());
 		return accountDTO;
 	}
-	
+
 	/* from accountDTO to account */
 	private Account setAccount(AccountDTO dto) {
 		account.setId(dto.getId());
@@ -62,7 +63,8 @@ public class AccountService {
 
 	/* from account List to an accountDTO List */
 	private List<AccountDTO> setAccountDTOList(List<Account> accountList) {
-		return accountList.stream().map(account -> new AccountDTO(account.getId(), account.getBalance(), account.getAccountHolder()))
+		return accountList.stream()
+				.map(account -> new AccountDTO(account.getId(), account.getBalance(), account.getAccountHolder()))
 				.collect(Collectors.toList());
 	}
 
@@ -82,9 +84,10 @@ public class AccountService {
 	public AccountDTO withdraw(Integer accountId, Double value) {
 		ifDoesntExistsThrowException(accountId);
 		Account withdrawalAccount = accountRepository.findById(accountId).get();
-		
-		if (withdrawalAccount.getBalance() < value ) {
-			throw new BalanceLowerThanWithdrawalException("The account with id " + accountId + " has balance lower than withdrawal: " + value);
+
+		if (withdrawalAccount.getBalance() < value) {
+			throw new BalanceLowerThanWithdrawalException(
+					"The account with id " + accountId + " has balance lower than withdrawal: " + value);
 		}
 		Double valueAfterWithdraw = withdrawalAccount.getBalance() - value;
 		withdrawalAccount.setBalance(valueAfterWithdraw);
@@ -108,19 +111,23 @@ public class AccountService {
 	public AccountDTO transfer(Integer originAccountId, Integer destinationAccountId, Double value) {
 		deposit(destinationAccountId, value);
 		AccountDTO originAccountDTO = withdraw(originAccountId, value);
-		
+
 		return originAccountDTO;
 	}
 
 	private boolean ifDoesntExistsThrowException(Integer accountId) {
 		boolean itExists = accountRepository.existsById(accountId);
-		if ( !itExists ) {
+		if (!itExists) {
 			throw new AccountDoesntExistsException("The account with id " + accountId + " doesn't exist.");
 		}
 		return itExists;
 	}
 
 	public AccountDTO create(AccountCreateDTO createDTO) {
+		if (createDTO.getBalance() == null || createDTO.getAccountHolderId() == null) {
+			throw new CannotRequestNullValueException("Cannot get/post/put/delete null values.");
+		}
+
 		accountDTO.setId(0);
 		accountDTO.setBalance(createDTO.getBalance());
 		accountDTO.setAccountHolder(accountHolderRepository.findById(createDTO.getAccountHolderId()).get());
@@ -137,7 +144,7 @@ public class AccountService {
 
 	public AccountDTO deleteAndShowDeletedAccount(Integer accountId) {
 		ifDoesntExistsThrowException(accountId);
-		Account accountToBeDeleted =  accountRepository.findById(accountId).get();
+		Account accountToBeDeleted = accountRepository.findById(accountId).get();
 		accountRepository.delete(accountToBeDeleted);
 		AccountDTO deletedAccountDTO = setAccountDTO(accountToBeDeleted);
 		return deletedAccountDTO;
