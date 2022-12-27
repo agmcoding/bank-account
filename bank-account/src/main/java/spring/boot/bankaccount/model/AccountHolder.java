@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Component
 @Entity
 public class AccountHolder {
@@ -27,11 +29,10 @@ public class AccountHolder {
 
 	@Column(nullable = false)
 	private LocalDate birthday;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountHolder",
-			orphanRemoval = true,fetch = FetchType.EAGER)
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountHolder", orphanRemoval = true, fetch = FetchType.EAGER)
 	@Column
-	private List<Account> accounts; 
+	private List<Account> accounts;
 
 	public Integer getId() {
 		return id;
@@ -43,6 +44,11 @@ public class AccountHolder {
 
 	public LocalDate getBirthday() {
 		return birthday;
+	}
+
+	@JsonManagedReference
+	public List<Account> getAccounts() {
+		return accounts;
 	}
 
 	public void setId(Integer id) {
@@ -57,4 +63,12 @@ public class AccountHolder {
 		this.birthday = birthday;
 	}
 
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
+
+	public void removeAccount(Account account) {
+		accounts.remove(account);
+	}
+	
 }

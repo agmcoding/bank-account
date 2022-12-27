@@ -3,17 +3,20 @@ package spring.boot.bankaccount.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import spring.boot.bankaccount.dto.AccountCreateDTO;
 import spring.boot.bankaccount.dto.AccountDTO;
+import spring.boot.bankaccount.dto.AccountHolderCreateDTO;
+import spring.boot.bankaccount.dto.AccountHolderDTO;
 import spring.boot.bankaccount.exception.AccountDoesntExistsException;
+import spring.boot.bankaccount.exception.AccountHolderNotRegisteredException;
 import spring.boot.bankaccount.exception.BalanceLowerThanWithdrawalException;
 import spring.boot.bankaccount.exception.CannotRequestNullValueException;
 import spring.boot.bankaccount.model.Account;
+import spring.boot.bankaccount.model.AccountHolder;
 import spring.boot.bankaccount.repository.AccountHolderRepository;
 import spring.boot.bankaccount.repository.AccountRepository;
 
@@ -24,6 +27,8 @@ public class AccountService {
 	AccountDTO accountDTO;
 	Account account;
 	AccountHolderRepository accountHolderRepository;
+	AccountHolderDTO accountHolderDTO;
+	AccountHolder accountHolder;
 
 	@Autowired
 	public void setAccountRepository(AccountRepository accountRepository) {
@@ -43,6 +48,16 @@ public class AccountService {
 	@Autowired
 	public void setAccountHolderRepository(AccountHolderRepository accountHolderRepository) {
 		this.accountHolderRepository = accountHolderRepository;
+	}
+
+	@Autowired
+	public void setAccountHolderDTO(AccountHolderDTO accountHolderDTO) {
+		this.accountHolderDTO = accountHolderDTO;
+	}
+
+	@Autowired
+	public void setAccountHolder(AccountHolder accountHolder) {
+		this.accountHolder = accountHolder;
 	}
 
 	/* from account to accountDTO */
@@ -69,7 +84,7 @@ public class AccountService {
 	}
 
 	public AccountDTO getAccountDTO(Integer accountId) {
-		ifDoesntExistsThrowException(accountId);
+		ifAccountDoesntExistsThrowException(accountId);
 		Optional<Account> accountEntity = accountRepository.findById(accountId);
 		Account account = accountEntity.get();
 		AccountDTO accountDTO = setAccountDTO(account);
@@ -82,7 +97,7 @@ public class AccountService {
 	}
 
 	public AccountDTO withdraw(Integer accountId, Double value) {
-		ifDoesntExistsThrowException(accountId);
+		ifAccountDoesntExistsThrowException(accountId);
 		Account withdrawalAccount = accountRepository.findById(accountId).get();
 
 		if (withdrawalAccount.getBalance() < value) {
@@ -97,7 +112,7 @@ public class AccountService {
 	}
 
 	public AccountDTO deposit(Integer accountId, Double value) {
-		ifDoesntExistsThrowException(accountId);
+		ifAccountDoesntExistsThrowException(accountId);
 		Account depositAccount = accountRepository.findById(accountId).get();
 
 		Double valueAfterDeposit = depositAccount.getBalance() + value;
@@ -115,10 +130,19 @@ public class AccountService {
 		return originAccountDTO;
 	}
 
-	private boolean ifDoesntExistsThrowException(Integer accountId) {
+	private boolean ifAccountDoesntExistsThrowException(Integer accountId) {
 		boolean itExists = accountRepository.existsById(accountId);
 		if (!itExists) {
 			throw new AccountDoesntExistsException("The account with id " + accountId + " doesn't exist.");
+		}
+		return itExists;
+	}
+
+	private boolean ifAccountHolderNotRegisteredThrowException(Integer accountHolderId) {
+		boolean itExists = accountHolderRepository.existsById(accountHolderId);
+		if (!itExists) {
+			throw new AccountHolderNotRegisteredException(
+					"The account holder with id " + accountHolderId + " isn't registered.");
 		}
 		return itExists;
 	}
@@ -138,16 +162,81 @@ public class AccountService {
 	}
 
 	public void delete(Integer accountId) {
-		ifDoesntExistsThrowException(accountId);
+		ifAccountDoesntExistsThrowException(accountId);
 		accountRepository.deleteById(accountId);
 	}
 
 	public AccountDTO deleteAndShowDeletedAccount(Integer accountId) {
-		ifDoesntExistsThrowException(accountId);
+		ifAccountDoesntExistsThrowException(accountId);
 		Account accountToBeDeleted = accountRepository.findById(accountId).get();
+
+		accountToBeDeleted.getAccountHolder().removeAccount(accountToBeDeleted);
+		accountHolderRepository.save(accountToBeDeleted.getAccountHolder());
+
 		accountRepository.delete(accountToBeDeleted);
 		AccountDTO deletedAccountDTO = setAccountDTO(accountToBeDeleted);
 		return deletedAccountDTO;
+	}
+//TODO: || accountHolderCreateDTO.getAccounts() == null
+	public AccountHolderDTO registerAccountHolder(AccountHolderCreateDTO accountHolderCreateDTO) {
+		if (accountHolderCreateDTO.getName() == null || accountHolderCreateDTO.getBirthday() == null
+				) {
+			throw new CannotRequestNullValueException("Cannot get/post/put/delete null values.");
+		}
+		
+		//TODO: Need to know how to make this work
+//		for (Account i: accountHolderCreateDTO.getAccounts()) {
+//			boolean accountAlreadyHaveHolder = accountHolderRepository.existsById(i.getAccountHolder().getId());
+//			if (accountAlreadyHaveHolder) {
+//				throw new CannotRequestNullValueException("The given accounts already have account holders.");
+//			}//AccountAlreadyHaveHolderException
+//		}
+		
+		accountHolderDTO.setId(0);
+		accountHolderDTO.setName(accountHolderCreateDTO.getName());
+		accountHolderDTO.setBirthday(accountHolderCreateDTO.getBirthday());
+//TODO:		//accountHolderDTO.setAccounts(accountHolderCreateDTO.getAccounts());
+		AccountHolder newAccountHolder = setAccountHolder(accountHolderDTO);
+		AccountHolder savedNewAccountHolder = accountHolderRepository.save(newAccountHolder);
+		AccountHolderDTO newDTO = setAccountHolderDTO(savedNewAccountHolder);
+		return newDTO;
+	}
+
+	/* from accountHolderDTO to accountHolder */
+	private AccountHolder setAccountHolder(AccountHolderDTO dto) {
+		accountHolder.setId(dto.getId());
+		accountHolder.setName(dto.getName());
+		accountHolder.setBirthday(dto.getBirthday());
+		accountHolder.setAccounts(dto.getAccounts());
+		return accountHolder;
+	}
+
+	/* from accountHolder to accountHolderDTO */
+	private AccountHolderDTO setAccountHolderDTO(AccountHolder settingAccountHolderToDTO) {
+		accountHolderDTO.setId(settingAccountHolderToDTO.getId());
+		accountHolderDTO.setName(settingAccountHolderToDTO.getName());
+		accountHolderDTO.setBirthday(settingAccountHolderToDTO.getBirthday());
+		accountHolderDTO.setAccounts(settingAccountHolderToDTO.getAccounts());
+		return accountHolderDTO;
+	}
+
+	public List<AccountHolderDTO> getAllAccountHoldersDTO() {
+		List<AccountHolder> accountHolderList = accountHolderRepository.findAll();
+		return setAccountHolderDTOList(accountHolderList);
+	}
+
+	/* from accountHolder List to an accountHolderDTO List */
+	private List<AccountHolderDTO> setAccountHolderDTOList(List<AccountHolder> accountHolderList) {
+		return accountHolderList.stream().map(accountHolder -> new AccountHolderDTO(accountHolder.getId(),
+				accountHolder.getName(), accountHolder.getBirthday(), accountHolder.getAccounts()))
+				.collect(Collectors.toList());
+	}
+
+	public AccountHolderDTO getAccountHolderDTO(Integer accountHolderId) {
+		ifAccountHolderNotRegisteredThrowException(accountHolderId);
+		AccountHolder accountHolder = accountHolderRepository.findById(accountHolderId).get();
+		AccountHolderDTO accountHolderDTO = setAccountHolderDTO(accountHolder);
+		return accountHolderDTO;
 	}
 
 }

@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Component
 @Entity
 public class Account {
@@ -37,6 +39,7 @@ public class Account {
 		return balance;
 	}
 
+	@JsonBackReference
 	public AccountHolder getAccountHolder() {
 		return accountHolder;
 	}

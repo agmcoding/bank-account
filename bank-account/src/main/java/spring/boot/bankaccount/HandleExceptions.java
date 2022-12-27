@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import spring.boot.bankaccount.exception.AccountAlreadyExistsException;
 import spring.boot.bankaccount.exception.AccountDoesntExistsException;
+import spring.boot.bankaccount.exception.AccountHolderNotRegisteredException;
 import spring.boot.bankaccount.exception.BalanceLowerThanWithdrawalException;
 import spring.boot.bankaccount.exception.CannotRequestNullValueException;
 
@@ -33,6 +34,11 @@ public class HandleExceptions {
 	
 	@ExceptionHandler(BalanceLowerThanWithdrawalException.class)
 	public ResponseEntity<?> handleBalanceLowerThanWithdrawalException(BalanceLowerThanWithdrawalException e) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	}
+	
+	@ExceptionHandler(AccountHolderNotRegisteredException.class)
+	public ResponseEntity<?> handleAccountHolderNotRegisteredException(AccountHolderNotRegisteredException e) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 	}
 	
