@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import spring.boot.bankaccount.model.AccountHolder;
 
 @Repository
-public interface AccountHolderRepository extends JpaRepository<AccountHolder, Integer>{
+public interface AccountHolderRepository extends JpaRepository<AccountHolder, Integer> {
 
 }

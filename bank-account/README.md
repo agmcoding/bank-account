@@ -4,7 +4,7 @@
 
 ## Summary of this project 
 
-It simulates an account transaction. A Client can access some accounts and give some API requests like deposit, withdraw, transfer between accounts, view all accounts, get an account by Id, and so on. 
+It simulates an account transaction. An user can access accounts and give some API requests like deposit, withdraw, transfer between accounts, view all accounts, get an account by Id, and so on. 
 I'll keep improving this project by adding new features and implementing new concepts. 
 Suggestions to improve this code will be much appreciated =D
 

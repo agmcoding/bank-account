@@ -8,7 +8,7 @@ import spring.boot.bankaccount.model.Account;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 
-	/*
+	/**
 	 * The SQL methods are imported from the JpaRepository. The Spring will override
 	 * those methods.
 	 */

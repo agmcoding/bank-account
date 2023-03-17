@@ -70,5 +70,5 @@ public class AccountHolder {
 	public void removeAccount(Account account) {
 		accounts.remove(account);
 	}
-	
+
 }

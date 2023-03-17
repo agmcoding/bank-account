@@ -24,7 +24,7 @@ public class AccountHolderDTO {
 
 	public AccountHolderDTO() {
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}

@@ -177,25 +177,15 @@ public class AccountService {
 		AccountDTO deletedAccountDTO = setAccountDTO(accountToBeDeleted);
 		return deletedAccountDTO;
 	}
-//TODO: || accountHolderCreateDTO.getAccounts() == null
+
 	public AccountHolderDTO registerAccountHolder(AccountHolderCreateDTO accountHolderCreateDTO) {
-		if (accountHolderCreateDTO.getName() == null || accountHolderCreateDTO.getBirthday() == null
-				) {
+		if (accountHolderCreateDTO.getName() == null || accountHolderCreateDTO.getBirthday() == null) {
 			throw new CannotRequestNullValueException("Cannot get/post/put/delete null values.");
 		}
-		
-		//TODO: Need to know how to make this work
-//		for (Account i: accountHolderCreateDTO.getAccounts()) {
-//			boolean accountAlreadyHaveHolder = accountHolderRepository.existsById(i.getAccountHolder().getId());
-//			if (accountAlreadyHaveHolder) {
-//				throw new CannotRequestNullValueException("The given accounts already have account holders.");
-//			}//AccountAlreadyHaveHolderException
-//		}
-		
+
 		accountHolderDTO.setId(0);
 		accountHolderDTO.setName(accountHolderCreateDTO.getName());
 		accountHolderDTO.setBirthday(accountHolderCreateDTO.getBirthday());
-//TODO:		//accountHolderDTO.setAccounts(accountHolderCreateDTO.getAccounts());
 		AccountHolder newAccountHolder = setAccountHolder(accountHolderDTO);
 		AccountHolder savedNewAccountHolder = accountHolderRepository.save(newAccountHolder);
 		AccountHolderDTO newDTO = setAccountHolderDTO(savedNewAccountHolder);
