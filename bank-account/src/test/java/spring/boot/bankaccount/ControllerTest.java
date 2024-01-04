@@ -28,18 +28,29 @@ public class ControllerTest {
 		dto.setBalance(10.0);
 		dto.setAccountHolderId(1);
 
-		RestAssured.given().when().contentType(MediaType.APPLICATION_JSON_VALUE).body(dto).post("/account").then()
+		RestAssured.given().contentType(MediaType.APPLICATION_JSON_VALUE).body(dto).post("/account").then()
 				.statusCode(HttpStatus.CREATED.value());
 
 	}
 
 	@Test
-	void shouldNotCreateAccount() {
+	void shouldNotCreateAccountWithoutId() {
 
 		AccountCreateDTO dto = new AccountCreateDTO();
 		dto.setBalance(10.0);
 
-		RestAssured.given().when().contentType(MediaType.APPLICATION_JSON_VALUE).body(dto).post("/account").then()
+		RestAssured.given().contentType(MediaType.APPLICATION_JSON_VALUE).body(dto).post("/account").then()
+				.statusCode(HttpStatus.BAD_REQUEST.value());
+
+	}
+	
+	@Test
+	void shouldNotCreateAccountWithoutBalance() {
+
+		AccountCreateDTO dto = new AccountCreateDTO();
+		dto.setAccountHolderId(1);
+
+		RestAssured.given().contentType(MediaType.APPLICATION_JSON_VALUE).body(dto).post("/account").then()
 				.statusCode(HttpStatus.BAD_REQUEST.value());
 
 	}
@@ -47,7 +58,7 @@ public class ControllerTest {
 	@Test
 	void validateGetAllAccounts() {
 
-		RestAssured.given().when().get("/all-accounts").then().statusCode(HttpStatus.OK.value());
+		RestAssured.given().get("/all-accounts").then().statusCode(HttpStatus.OK.value());
 
 	}
 
