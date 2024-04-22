@@ -17,29 +17,29 @@ import spring.boot.bankaccount.exception.CannotRequestNullValueException;
 @ControllerAdvice
 public class HandleExceptions {
 
-	@ExceptionHandler(AccountDoesntExistsException.class)
-	public ResponseEntity<?> handleAccountDoesntExistsException(AccountDoesntExistsException e) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	}
-	
-	@ExceptionHandler(CannotRequestNullValueException.class)
-	public ResponseEntity<?> handleCannotRequestNullValueException(CannotRequestNullValueException e) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	}
-	
-	@ExceptionHandler(AccountAlreadyExistsException.class)
-	public ResponseEntity<?> handleAccountAlreadyExistsException(AccountAlreadyExistsException e) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	}
-	
-	@ExceptionHandler(BalanceLowerThanWithdrawalException.class)
-	public ResponseEntity<?> handleBalanceLowerThanWithdrawalException(BalanceLowerThanWithdrawalException e) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	}
-	
-	@ExceptionHandler(AccountHolderNotRegisteredException.class)
-	public ResponseEntity<?> handleAccountHolderNotRegisteredException(AccountHolderNotRegisteredException e) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	}
-	
+    @ExceptionHandler(AccountDoesntExistsException.class)
+    public ResponseEntity<?> handleAccountDoesntExistsException(AccountDoesntExistsException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  
+    @ExceptionHandler(CannotRequestNullValueException.class)
+    public ResponseEntity<?> handleCannotRequestNullValueException(CannotRequestNullValueException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  
+    @ExceptionHandler(AccountAlreadyExistsException.class)
+    public ResponseEntity<?> handleAccountAlreadyExistsException(AccountAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  
+    @ExceptionHandler(BalanceLowerThanWithdrawalException.class)
+    public ResponseEntity<?> handleBalanceLowerThanWithdrawalException(BalanceLowerThanWithdrawalException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  
+    @ExceptionHandler(AccountHolderNotRegisteredException.class)
+    public ResponseEntity<?> handleAccountHolderNotRegisteredException(AccountHolderNotRegisteredException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  
 }
