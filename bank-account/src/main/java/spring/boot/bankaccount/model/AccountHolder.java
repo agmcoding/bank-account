@@ -51,23 +51,23 @@ public class AccountHolder {
 		return accounts;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public void setBirthday(LocalDate birthday) {
+	public void setBirthday(final LocalDate birthday) {
 		this.birthday = birthday;
 	}
 
-	public void setAccounts(List<Account> accounts) {
+	public void setAccounts(final List<Account> accounts) {
 		this.accounts = accounts;
 	}
 
-	public void removeAccount(Account account) {
+	public void removeAccount(final Account account) {
 		accounts.remove(account);
 	}
 

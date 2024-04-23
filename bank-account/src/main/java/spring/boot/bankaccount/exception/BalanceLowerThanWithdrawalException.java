@@ -6,7 +6,7 @@ public class BalanceLowerThanWithdrawalException extends RuntimeException {
 		super();
 	}
 
-	public BalanceLowerThanWithdrawalException(String message) {
+	public BalanceLowerThanWithdrawalException(final String message) {
 		super(message);
 	}
 

@@ -44,15 +44,15 @@ public class Account {
 		return accountHolder;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
-	public void setBalance(Double balance) {
+	public void setBalance(final Double balance) {
 		this.balance = balance;
 	}
 
-	public void setAccountHolder(AccountHolder accountHolder) {
+	public void setAccountHolder(final AccountHolder accountHolder) {
 		this.accountHolder = accountHolder;
 	}
 

@@ -11,7 +11,7 @@ public class AccountDTO {
 	private Double balance;
 	private AccountHolder accountHolder;
 
-	public AccountDTO(Integer id, Double balance, AccountHolder accountHolder) {
+	public AccountDTO(final Integer id, final Double balance, final AccountHolder accountHolder) {
 		this.id = id;
 		this.balance = balance;
 		this.accountHolder = accountHolder;
@@ -35,15 +35,15 @@ public class AccountDTO {
 		return accountHolder;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
-	public void setBalance(Double balance) {
+	public void setBalance(final Double balance) {
 		this.balance = balance;
 	}
 
-	public void setAccountHolder(AccountHolder accountHolder) {
+	public void setAccountHolder(final AccountHolder accountHolder) {
 		this.accountHolder = accountHolder;
 	}
 

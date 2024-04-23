@@ -15,7 +15,7 @@ public class AccountHolderDTO {
 	private LocalDate birthday;
 	private List<Account> accounts;
 
-	public AccountHolderDTO(Integer id, String name, LocalDate birthday, List<Account> accounts) {
+	public AccountHolderDTO(final Integer id, final String name, final LocalDate birthday, final List<Account> accounts) {
 		this.id = id;
 		this.name = name;
 		this.birthday = birthday;
@@ -41,19 +41,19 @@ public class AccountHolderDTO {
 		return accounts;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public void setBirthday(LocalDate birthday) {
+	public void setBirthday(final LocalDate birthday) {
 		this.birthday = birthday;
 	}
 
-	public void setAccounts(List<Account> accounts) {
+	public void setAccounts(final List<Account> accounts) {
 		this.accounts = accounts;
 	}
 

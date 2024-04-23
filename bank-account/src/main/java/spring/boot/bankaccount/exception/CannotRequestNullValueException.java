@@ -6,7 +6,7 @@ public class CannotRequestNullValueException extends RuntimeException {
 		super();
 	}
 
-	public CannotRequestNullValueException(String message) {
+	public CannotRequestNullValueException(final String message) {
 		super(message);
 	}
 
