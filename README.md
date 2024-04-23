@@ -2,7 +2,7 @@
 
 ## Hi there
 
-## Summary of this project 
+## Summary of this project
 
 It simulates an account transaction using REST API with Java Spring Boot.
 
