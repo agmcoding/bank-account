@@ -17,11 +17,11 @@ public class AccountHolderCreateDTO {
 		return birthday;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public void setBirthday(LocalDate birthday) {
+	public void setBirthday(final LocalDate birthday) {
 		this.birthday = birthday;
 	}
 

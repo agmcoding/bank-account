@@ -6,7 +6,7 @@ public class AccountHolderNotRegisteredException extends RuntimeException {
 		super();
 	}
 
-	public AccountHolderNotRegisteredException(String message) {
+	public AccountHolderNotRegisteredException(final String message) {
 		super(message);
 	}
 

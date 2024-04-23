@@ -15,31 +15,31 @@ import spring.boot.bankaccount.exception.CannotRequestNullValueException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
-public class HandleExceptions {
+public final class HandleExceptions {
 
     @ExceptionHandler(AccountDoesntExistsException.class)
-    public ResponseEntity<?> handleAccountDoesntExistsException(AccountDoesntExistsException e) {
+    public ResponseEntity<?> handleAccountDoesntExistsException(final AccountDoesntExistsException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
-  
+
     @ExceptionHandler(CannotRequestNullValueException.class)
-    public ResponseEntity<?> handleCannotRequestNullValueException(CannotRequestNullValueException e) {
+    public ResponseEntity<?> handleCannotRequestNullValueException(final CannotRequestNullValueException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
-  
+
     @ExceptionHandler(AccountAlreadyExistsException.class)
-    public ResponseEntity<?> handleAccountAlreadyExistsException(AccountAlreadyExistsException e) {
+    public ResponseEntity<?> handleAccountAlreadyExistsException(final AccountAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
-  
+
     @ExceptionHandler(BalanceLowerThanWithdrawalException.class)
-    public ResponseEntity<?> handleBalanceLowerThanWithdrawalException(BalanceLowerThanWithdrawalException e) {
+    public ResponseEntity<?> handleBalanceLowerThanWithdrawalException(final BalanceLowerThanWithdrawalException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
-  
+
     @ExceptionHandler(AccountHolderNotRegisteredException.class)
-    public ResponseEntity<?> handleAccountHolderNotRegisteredException(AccountHolderNotRegisteredException e) {
+    public ResponseEntity<?> handleAccountHolderNotRegisteredException(final AccountHolderNotRegisteredException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
-  
+
 }

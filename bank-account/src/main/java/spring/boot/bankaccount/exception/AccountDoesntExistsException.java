@@ -6,7 +6,7 @@ public class AccountDoesntExistsException extends RuntimeException {
 		super();
 	}
 
-	public AccountDoesntExistsException(String message) {
+	public AccountDoesntExistsException(final String message) {
 		super(message);
 	}
 

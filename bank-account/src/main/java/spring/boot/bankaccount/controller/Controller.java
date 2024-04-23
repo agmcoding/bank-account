@@ -22,16 +22,16 @@ import spring.boot.bankaccount.exception.CannotRequestNullValueException;
 import spring.boot.bankaccount.service.AccountService;
 
 @RestController("/")
-public class Controller {
+public final class Controller {
 
-    AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
-    public void setAccountService(AccountService accountService) {
+    public void setAccountService(final AccountService accountService) {
         this.accountService = accountService;
     }
 
-    private void checkIfNull(Object o) {
+    private void checkIfNull(final Object o) {
         if (o == null) {
             throw new CannotRequestNullValueException("Cannot get/post/put/delete null values.");
         }
@@ -53,14 +53,14 @@ public class Controller {
     }
 
     @GetMapping("/account/{accountId}")
-    public ResponseEntity<AccountDTO> getAccount(@PathVariable("accountId") Integer accountId) {
+    public ResponseEntity<AccountDTO> getAccount(@PathVariable("accountId") final Integer accountId) {
         checkIfNull(accountId);
         AccountDTO accountDTO = accountService.getAccountDTO(accountId);
         return ResponseEntity.status(HttpStatus.OK).body(accountDTO);
     }
 
     @PutMapping("/account/{accountId}/withdraw")
-    public ResponseEntity<AccountDTO> withdrawAccount(@PathVariable("accountId") Integer accountId, @RequestParam("value") Double value) {
+    public ResponseEntity<AccountDTO> withdrawAccount(@PathVariable("accountId") final Integer accountId, @RequestParam("value") final Double value) {
         checkIfNull(accountId);
         checkIfNull(value);
         AccountDTO accountDTO = accountService.withdraw(accountId, value);
@@ -68,7 +68,7 @@ public class Controller {
     }
 
     @PutMapping("/account/{accountId}/deposit")
-    public ResponseEntity<AccountDTO> depositAccount(@PathVariable("accountId") Integer accountId, @RequestParam("value") Double value) {
+    public ResponseEntity<AccountDTO> depositAccount(@PathVariable("accountId") final Integer accountId, @RequestParam("value") final Double value) {
         checkIfNull(accountId);
         checkIfNull(value);
         AccountDTO accountDTO = accountService.deposit(accountId, value);
@@ -76,7 +76,7 @@ public class Controller {
     }
 
     @PutMapping("/account/{originAccountId}/transfer/{destinationAccountId}")
-    public ResponseEntity<AccountDTO> transfer(@PathVariable("originAccountId") Integer originAccountId, @PathVariable("destinationAccountId") Integer destinationAccountId, @RequestParam("value") Double value) {
+    public ResponseEntity<AccountDTO> transfer(@PathVariable("originAccountId") final Integer originAccountId, @PathVariable("destinationAccountId") final Integer destinationAccountId, @RequestParam("value") final Double value) {
         checkIfNull(originAccountId);
         checkIfNull(destinationAccountId);
         checkIfNull(value);
@@ -85,16 +85,16 @@ public class Controller {
     }
 
     @PostMapping("/account")
-    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountCreateDTO createDTO) {
+    public ResponseEntity<AccountDTO> createAccount(@RequestBody final AccountCreateDTO createDTO) {
         checkIfNull(createDTO);
         AccountDTO newAccountDTO = accountService.create(createDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(newAccountDTO);
     }
 
     @DeleteMapping("/account/{accountId}")
-    public ResponseEntity<?> deleteAccount(@PathVariable Integer accountId, @RequestParam boolean showDeletedAccount) {
+    public ResponseEntity<?> deleteAccount(@PathVariable final Integer accountId, @RequestParam final boolean showDeletedAccount) {
         checkIfNull(accountId);
-        if (showDeletedAccount == false) {
+        if (!showDeletedAccount) {
             accountService.delete(accountId);
             return ResponseEntity.noContent().build();
         } else {
@@ -113,14 +113,14 @@ public class Controller {
     }
 
     @GetMapping("/account-holder/{accountHolderId}")
-    public ResponseEntity<?> getAccountHolder(@PathVariable Integer accountHolderId) {
+    public ResponseEntity<?> getAccountHolder(@PathVariable final Integer accountHolderId) {
         checkIfNull(accountHolderId);
         AccountHolderDTO accountHolderDTO = accountService.getAccountHolderDTO(accountHolderId);
         return ResponseEntity.status(HttpStatus.OK).body(accountHolderDTO);
     }
-  
+
     @PostMapping("/account-holder")
-    public ResponseEntity<?> registerAccountHolder(@RequestBody AccountHolderCreateDTO accountHolderDTO) {
+    public ResponseEntity<?> registerAccountHolder(@RequestBody final AccountHolderCreateDTO accountHolderDTO) {
         checkIfNull(accountHolderDTO);
         AccountHolderDTO newAccountHolderDTO = accountService.registerAccountHolder(accountHolderDTO);
         return ResponseEntity.status(HttpStatus.OK).body(newAccountHolderDTO);
