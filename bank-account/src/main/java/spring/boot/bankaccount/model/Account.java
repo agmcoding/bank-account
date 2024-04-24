@@ -15,45 +15,45 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Component
 @Entity
-public class Account {
+public final class Account {
 
-	@Id()
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "account_id")
-	private Integer id;
+    @Id()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
+    private Integer id;
 
-	@Column(nullable = false)
-	private Double balance;
+    @Column(nullable = false)
+    private Double balance;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "account_holder")
-	private AccountHolder accountHolder;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_holder")
+    private AccountHolder accountHolder;
 
-//	getters and setters	
+//	getters and setters
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Double getBalance() {
-		return balance;
-	}
+    public Double getBalance() {
+        return balance;
+    }
 
-	@JsonBackReference
-	public AccountHolder getAccountHolder() {
-		return accountHolder;
-	}
+    @JsonBackReference
+    public AccountHolder getAccountHolder() {
+        return accountHolder;
+    }
 
-	public void setId(final Integer id) {
-		this.id = id;
-	}
+    public void setId(final Integer id) {
+        this.id = id;
+    }
 
-	public void setBalance(final Double balance) {
-		this.balance = balance;
-	}
+    public void setBalance(final Double balance) {
+        this.balance = balance;
+    }
 
-	public void setAccountHolder(final AccountHolder accountHolder) {
-		this.accountHolder = accountHolder;
-	}
+    public void setAccountHolder(final AccountHolder accountHolder) {
+        this.accountHolder = accountHolder;
+    }
 
 }

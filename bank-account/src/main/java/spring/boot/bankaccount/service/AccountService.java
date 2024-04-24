@@ -23,12 +23,12 @@ import spring.boot.bankaccount.repository.AccountRepository;
 @Service
 public class AccountService {
 
-    AccountRepository accountRepository;
-    AccountDTO accountDTO;
-    Account account;
-    AccountHolderRepository accountHolderRepository;
-    AccountHolderDTO accountHolderDTO;
-    AccountHolder accountHolder;
+    private AccountRepository accountRepository;
+    private AccountDTO accountDTO;
+    private Account account;
+    private AccountHolderRepository accountHolderRepository;
+    private AccountHolderDTO accountHolderDTO;
+    private AccountHolder accountHolder;
 
     @Autowired
     public void setAccountRepository(final AccountRepository accountRepository) {

@@ -5,12 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import spring.boot.bankaccount.model.Account;
 
+/**
+ * The SQL methods are imported from the JpaRepository.
+ * The Spring will override those methods.
+ */
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Integer> {
-
-	/**
-	 * The SQL methods are imported from the JpaRepository. The Spring will override
-	 * those methods.
-	 */
 
 }

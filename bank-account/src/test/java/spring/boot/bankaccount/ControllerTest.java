@@ -11,55 +11,59 @@ import io.restassured.RestAssured;
 import spring.boot.bankaccount.dto.AccountCreateDTO;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ControllerTest {
+public final class ControllerTest {
 
-	@LocalServerPort
-	private int randomPort;
+    @LocalServerPort
+    private int randomPort;
 
-	@BeforeEach
-	public void setUpTest() {
-		RestAssured.port = randomPort;
-	}
+    @BeforeEach
+    public void setUpTest() {
+        RestAssured.port = randomPort;
+    }
 
-	@Test
-	void createAccount() {
+    @Test
+    void createAccount() {
+        final int id = 1;
+        final double balance = 10.0;
 
-		AccountCreateDTO dto = new AccountCreateDTO();
-		dto.setBalance(10.0);
-		dto.setAccountHolderId(1);
+        AccountCreateDTO dto = new AccountCreateDTO();
+        dto.setAccountHolderId(id);
+        dto.setBalance(balance);
 
-		RestAssured.given().contentType(MediaType.APPLICATION_JSON_VALUE).body(dto).post("/account").then()
-				.statusCode(HttpStatus.CREATED.value());
+        RestAssured
+            .given().contentType(MediaType.APPLICATION_JSON_VALUE).body(dto).post("/account")
+            .then().statusCode(HttpStatus.CREATED.value());
+    }
 
-	}
+    @Test
+    void shouldNotCreateAccountWithoutId() {
+        final double balance = 10.0;
 
-	@Test
-	void shouldNotCreateAccountWithoutId() {
+        AccountCreateDTO dto = new AccountCreateDTO();
+        dto.setBalance(balance);
 
-		AccountCreateDTO dto = new AccountCreateDTO();
-		dto.setBalance(10.0);
+        RestAssured
+        .given().contentType(MediaType.APPLICATION_JSON_VALUE).body(dto).post("/account")
+        .then().statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 
-		RestAssured.given().contentType(MediaType.APPLICATION_JSON_VALUE).body(dto).post("/account").then()
-				.statusCode(HttpStatus.BAD_REQUEST.value());
+    @Test
+    void shouldNotCreateAccountWithoutBalance() {
+        final int id = 1;
 
-	}
-	
-	@Test
-	void shouldNotCreateAccountWithoutBalance() {
+        AccountCreateDTO dto = new AccountCreateDTO();
+        dto.setAccountHolderId(id);
 
-		AccountCreateDTO dto = new AccountCreateDTO();
-		dto.setAccountHolderId(1);
+        RestAssured
+        .given().contentType(MediaType.APPLICATION_JSON_VALUE).body(dto).post("/account")
+        .then().statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 
-		RestAssured.given().contentType(MediaType.APPLICATION_JSON_VALUE).body(dto).post("/account").then()
-				.statusCode(HttpStatus.BAD_REQUEST.value());
-
-	}
-
-	@Test
-	void validateGetAllAccounts() {
-
-		RestAssured.given().get("/all-accounts").then().statusCode(HttpStatus.OK.value());
-
-	}
+    @Test
+    void validateGetAllAccounts() {
+        RestAssured
+        .given().get("/all-accounts")
+        .then().statusCode(HttpStatus.OK.value());
+    }
 
 }
