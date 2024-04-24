@@ -3,36 +3,36 @@ package spring.boot.bankaccount.dto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AccountCreateDTO {
+public final class AccountCreateDTO {
 
-	private Double balance;
-	private Integer accountHolderId;
+    private Double balance;
+    private Integer accountHolderId;
 
-	public AccountCreateDTO(final Double balance, final Integer accountHolderId) {
-		this.balance = balance;
-		this.accountHolderId = accountHolderId;
-	}
+    public AccountCreateDTO(final Double balance, final Integer accountHolderId) {
+        this.balance = balance;
+        this.accountHolderId = accountHolderId;
+    }
 
-	public AccountCreateDTO() {
-		super();
-	}
+    public AccountCreateDTO() {
+        super();
+    }
 
-//		getters and setters	
+//  getters and setters
 
-	public Double getBalance() {
-		return balance;
-	}
+    public Double getBalance() {
+        return balance;
+    }
 
-	public Integer getAccountHolderId() {
-		return accountHolderId;
-	}
+    public Integer getAccountHolderId() {
+        return accountHolderId;
+    }
 
-	public void setBalance(final Double balance) {
-		this.balance = balance;
-	}
+    public void setBalance(final Double balance) {
+        this.balance = balance;
+    }
 
-	public void setAccountHolderId(final Integer accountHolderId) {
-		this.accountHolderId = accountHolderId;
-	}
+    public void setAccountHolderId(final Integer accountHolderId) {
+        this.accountHolderId = accountHolderId;
+    }
 
 }

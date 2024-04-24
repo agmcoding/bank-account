@@ -18,57 +18,57 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Component
 @Entity
-public class AccountHolder {
+public final class AccountHolder {
 
-	@Id()
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(nullable = false, length = 50)
-	private String name;
+    @Column(nullable = false, length = 50)
+    private String name;
 
-	@Column(nullable = false)
-	private LocalDate birthday;
+    @Column(nullable = false)
+    private LocalDate birthday;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountHolder", orphanRemoval = true, fetch = FetchType.EAGER)
-	@Column
-	private List<Account> accounts;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountHolder", orphanRemoval = true, fetch = FetchType.EAGER)
+    @Column
+    private List<Account> accounts;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public LocalDate getBirthday() {
-		return birthday;
-	}
+    public LocalDate getBirthday() {
+        return birthday;
+    }
 
-	@JsonManagedReference
-	public List<Account> getAccounts() {
-		return accounts;
-	}
+    @JsonManagedReference
+    public List<Account> getAccounts() {
+        return accounts;
+    }
 
-	public void setId(final Integer id) {
-		this.id = id;
-	}
+    public void setId(final Integer id) {
+        this.id = id;
+    }
 
-	public void setName(final String name) {
-		this.name = name;
-	}
+    public void setName(final String name) {
+        this.name = name;
+    }
 
-	public void setBirthday(final LocalDate birthday) {
-		this.birthday = birthday;
-	}
+    public void setBirthday(final LocalDate birthday) {
+        this.birthday = birthday;
+    }
 
-	public void setAccounts(final List<Account> accounts) {
-		this.accounts = accounts;
-	}
+    public void setAccounts(final List<Account> accounts) {
+        this.accounts = accounts;
+    }
 
-	public void removeAccount(final Account account) {
-		accounts.remove(account);
-	}
+    public void removeAccount(final Account account) {
+        accounts.remove(account);
+    }
 
 }
